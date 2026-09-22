@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>তথ্য পোর্টাল</title>
+    <!-- Telegram Web App JS SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .header {
+            background-color: #006a4e;
+            color: white;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .container {
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 85%;
+            padding: 12px;
+            background-color: #006a4e;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #004d38;
+        }
+        .result-box {
+            margin-top: 15px;
+            text-align: left;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        গভর্নমেন্ট তথ্য পোর্টাল
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <h2>আপনার প্রতিষ্ঠানের শিক্ষক খুঁজুন</h2>
+            <p>প্রতিষ্ঠানের EIIN নম্বরটি লিখুন এবং সকল শিক্ষকের বিস্তারিত তথ্য দেখুন।</p>
+
+            <input type="text" id="eiinInput" placeholder="# উদাহরণ: 105751">
+            <button onclick="searchTeacher()">🔍 তথ্য অনুসন্ধান করুন</button>
+
+            <div id="resultBox" class="result-box"></div>
+        </div>
+    </div>
+
+    <script>
+        // নমুনা ডাটাবেজ (এখানে প্রতিষ্ঠানের EIIN অনুসারে তথ্য রাখা হয়েছে)
+        const teacherData = {
+            "105751": [
+                { name: "আব্দুর রহিম", role: "প্রধান শিক্ষক", phone: "01700000000", facebook: "https://facebook.com/example1" },
+                { name: "মোছাঃ পারভীন", role: "সহকারী শিক্ষক", phone: "01800000000", facebook: "https://facebook.com/example2" }
+            ],
+            "100000": [
+                { name: "রফিকুল ইসলাম", role: "প্রভাষক", phone: "01900000000", facebook: "https://facebook.com/example3" }
+            ]
+        };
+
+        function searchTeacher() {
+            const eiin = document.getElementById("eiinInput").value.trim();
+            const resultBox = document.getElementById("resultBox");
+            resultBox.innerHTML = "";
+
+            if (teacherData[eiin]) {
+                let html = "<h3>শিক্ষকদের তালিকা:</h3><ul>";
+                teacherData[eiin].forEach(teacher => {
+                    html += `<li>
+                        <b>নাম:</b> ${teacher.name} <br>
+                        <b>পদবী:</b> ${teacher.role} <br>
+                        <b>ফোন:</b> ${teacher.phone} <br>
+                        <b>ফেসবুক:</b> <a href="${teacher.facebook}" target="_blank">প্রোফাইল</a>
+                    </li><hr>`;
+                });
+                html += "</ul>";
+                resultBox.innerHTML = html;
+                resultBox.style.display = "block";
+            } else {
+                resultBox.innerHTML = "<p style='color:red;'>এই EIIN নম্বরের কোনো তথ্য পাওয়া যায়নি।</p>";
+                resultBox.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
